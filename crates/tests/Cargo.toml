@@ -1,0 +1,9 @@
+[package]
+name = "ezcfg_test"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+ezcfg_linker = { path = "../linker" }
+ezcfg_config = { path = "../config" }
+assert_fs = "1.1"
