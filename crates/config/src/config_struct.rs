@@ -89,9 +89,9 @@ mod tests {
 
             assert_eq!(config.links.len(), 2);
             assert_eq!(config.links[0].0, concat_pwd("a"));
-            assert_eq!(config.links[0].1, concat_pwd("b"));
+            assert_eq!(config.links[0].1, "b");
             assert_eq!(config.links[1].0, concat_pwd("c"));
-            assert_eq!(config.links[1].1, concat_pwd("d"));
+            assert_eq!(config.links[1].1, "d");
         })
     }
 }

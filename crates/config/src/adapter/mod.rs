@@ -69,10 +69,11 @@ pub fn adapter(path: &PathBuf, kind: &str, raw: &str) -> Result<Config, ReadConf
     let links = relative_links
         .iter()
         .map(|(source, target)| {
-            let source = current_dir.join(source).to_str().unwrap().to_string();
-            let target = current_dir.join(target).to_str().unwrap().to_string();
-
-            (source, target)
+            (
+                current_dir.join(source).to_str().unwrap().to_string(),
+                // The target should be the absolute path
+                target.to_string(),
+            )
         })
         .collect();
 
@@ -107,9 +108,9 @@ mod tests {
 
         assert_eq!(config.links.len(), 2);
         assert_eq!(config.links[0].0, concat_pwd("a"));
-        assert_eq!(config.links[0].1, concat_pwd("b"));
+        assert_eq!(config.links[0].1, "b");
         assert_eq!(config.links[1].0, concat_pwd("c"));
-        assert_eq!(config.links[1].1, concat_pwd("d"));
+        assert_eq!(config.links[1].1, "d");
     }
 
     #[test]
@@ -148,9 +149,9 @@ mod tests {
 
             assert_eq!(config.links.len(), 2);
             assert_eq!(config.links[0].0, concat_pwd("m_a"));
-            assert_eq!(config.links[0].1, concat_pwd("m_b"));
+            assert_eq!(config.links[0].1, "m_b");
             assert_eq!(config.links[1].0, concat_pwd("m_c"));
-            assert_eq!(config.links[1].1, concat_pwd("m_d"));
+            assert_eq!(config.links[1].1, "m_d");
         }
 
         {
@@ -168,9 +169,9 @@ mod tests {
 
             assert_eq!(config.links.len(), 2);
             assert_eq!(config.links[0].0, concat_pwd("a"));
-            assert_eq!(config.links[0].1, concat_pwd("b"));
+            assert_eq!(config.links[0].1, "b");
             assert_eq!(config.links[1].0, concat_pwd("c"));
-            assert_eq!(config.links[1].1, concat_pwd("d"));
+            assert_eq!(config.links[1].1, "d");
         }
     }
 
@@ -192,9 +193,9 @@ mod tests {
 
             assert_eq!(config.links.len(), 2);
             assert_eq!(config.links[0].0, concat_pwd("m_a"));
-            assert_eq!(config.links[0].1, concat_pwd("m_b"));
+            assert_eq!(config.links[0].1, "m_b");
             assert_eq!(config.links[1].0, concat_pwd("m_c"));
-            assert_eq!(config.links[1].1, concat_pwd("m_d"));
+            assert_eq!(config.links[1].1, "m_d");
         }
 
         {
@@ -212,9 +213,9 @@ mod tests {
 
             assert_eq!(config.links.len(), 2);
             assert_eq!(config.links[0].0, concat_pwd("a"));
-            assert_eq!(config.links[0].1, concat_pwd("b"));
+            assert_eq!(config.links[0].1, "b");
             assert_eq!(config.links[1].0, concat_pwd("c"));
-            assert_eq!(config.links[1].1, concat_pwd("d"));
+            assert_eq!(config.links[1].1, "d");
         }
     }
 
@@ -236,9 +237,9 @@ mod tests {
 
             assert_eq!(config.links.len(), 2);
             assert_eq!(config.links[0].0, concat_pwd("m_a"));
-            assert_eq!(config.links[0].1, concat_pwd("m_b"));
+            assert_eq!(config.links[0].1, "m_b");
             assert_eq!(config.links[1].0, concat_pwd("m_c"));
-            assert_eq!(config.links[1].1, concat_pwd("m_d"));
+            assert_eq!(config.links[1].1, "m_d");
         }
 
         {
@@ -256,9 +257,9 @@ mod tests {
 
             assert_eq!(config.links.len(), 2);
             assert_eq!(config.links[0].0, concat_pwd("a"));
-            assert_eq!(config.links[0].1, concat_pwd("b"));
+            assert_eq!(config.links[0].1, "b");
             assert_eq!(config.links[1].0, concat_pwd("c"));
-            assert_eq!(config.links[1].1, concat_pwd("d"));
+            assert_eq!(config.links[1].1, "d");
         }
     }
 }
