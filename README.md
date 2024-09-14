@@ -2,6 +2,23 @@
 
 Help you manage various configuration files in your system, like `.nvim`、`.zshrc` and etc.
 
+> 🚧 **Work in Progress**
+>
+> ezcfg is currently in active development...
+
+## Install
+
+### unix
+
+```bash
+brew tap tim101010101/ezcfg
+brew install ezcfg
+```
+
+### windows
+
+**Not supported for the time being.**
+
 ## Usage
 
 Find a place to centrally manage your configuration files. 
