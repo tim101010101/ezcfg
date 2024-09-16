@@ -31,7 +31,6 @@ impl TryFrom<&PathBuf> for Config {
                 return Err(FailedToGetExtension(path.to_owned()));
             }
         };
-
         let content = {
             if let Ok(content) = read_to_string(path) {
                 content
@@ -39,7 +38,6 @@ impl TryFrom<&PathBuf> for Config {
                 return Err(FailedToReadFile(path.to_owned()));
             }
         };
-
         let raw_config = adapter(path, ext, &content)?;
 
         let links = link_transform(raw_config.links);
