@@ -92,3 +92,12 @@ pub fn test_in_temp_dir_with_config(config: Config) {
         run_and_test_all_links(&links);
     })
 }
+
+pub fn test_in_temp_dir<F>(f: F)
+where
+    F: FnOnce(&mut TempDir),
+{
+    let mut temp_source_dir = TempDir::new().unwrap();
+    f(&mut temp_source_dir);
+    temp_source_dir.close().unwrap()
+}

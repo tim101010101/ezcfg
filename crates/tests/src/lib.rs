@@ -2,6 +2,6 @@
 mod macros;
 
 mod core;
-mod utils;
 
+pub mod utils;
 pub use utils::*;
