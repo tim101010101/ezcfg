@@ -71,6 +71,8 @@ pub fn adapter(path: &PathBuf, kind: &str, raw: &str) -> Result<Config, ReadConf
         .map(|(source, target)| {
             (
                 current_dir.join(source).to_str().unwrap().to_string(),
+                // TODO Fine, we need to use some placeholders like `~` to
+                // TODO represent the home directory...
                 // The target should be the absolute path
                 target.to_string(),
             )
@@ -93,6 +95,14 @@ mod tests {
             .to_str()
             .unwrap()
             .to_string()
+    }
+
+    #[test]
+    fn test_ser() {
+        let path = PathBuf::from("~/config");
+        let path = path.canonicalize().unwrap();
+
+        println!("{}", path.to_str().unwrap());
     }
 
     #[test]
