@@ -40,8 +40,8 @@ Configure the source path and target path of the link you need.
 
 ```toml
 links = [
-    ["zsh/.zshrc", "~/.zshrc"],
-    ["nvim",       "~/.config/nvim"],
+    ["zsh/.zshrc", "$HOME/.zshrc"],
+    ["nvim",       "$HOME/.config/nvim"],
 ]
 ```
 
