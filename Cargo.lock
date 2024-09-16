@@ -154,7 +154,7 @@ dependencies = [
 
 [[package]]
 name = "ezcfg"
-version = "0.1.0"
+version = "0.0.3"
 dependencies = [
  "assert_cmd",
  "assert_fs",
