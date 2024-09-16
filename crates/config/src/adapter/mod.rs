@@ -41,7 +41,7 @@ pub fn adapter(path: &PathBuf, kind: &str, raw: &str) -> Result<Config, ReadConf
 
     let rewrite = config_struct.rewrite.unwrap_or(false);
 
-    let relative_links = {
+    let links = {
         let system_specified_links = {
             if cfg!(target_os = "linux") {
                 config_struct.linux
@@ -65,20 +65,6 @@ pub fn adapter(path: &PathBuf, kind: &str, raw: &str) -> Result<Config, ReadConf
         }
     };
 
-    let current_dir = current_dir().unwrap();
-    let links = relative_links
-        .iter()
-        .map(|(source, target)| {
-            (
-                current_dir.join(source).to_str().unwrap().to_string(),
-                // TODO Fine, we need to use some placeholders like `~` to
-                // TODO represent the home directory...
-                // The target should be the absolute path
-                target.to_string(),
-            )
-        })
-        .collect();
-
     Ok(Config::new(links, rewrite))
 }
 
@@ -98,14 +84,6 @@ mod tests {
     }
 
     #[test]
-    fn test_ser() {
-        let path = PathBuf::from("~/config");
-        let path = path.canonicalize().unwrap();
-
-        println!("{}", path.to_str().unwrap());
-    }
-
-    #[test]
     fn it_should_parse_toml_str_into_config() {
         let raw = r#"
             links = [
@@ -117,9 +95,9 @@ mod tests {
         let config = adapter(&PathBuf::default(), "toml", raw).unwrap();
 
         assert_eq!(config.links.len(), 2);
-        assert_eq!(config.links[0].0, concat_pwd("a"));
+        assert_eq!(config.links[0].0, "a");
         assert_eq!(config.links[0].1, "b");
-        assert_eq!(config.links[1].0, concat_pwd("c"));
+        assert_eq!(config.links[1].0, "c");
         assert_eq!(config.links[1].1, "d");
     }
 
@@ -158,9 +136,9 @@ mod tests {
             let config = adapter(&PathBuf::default(), "toml", raw).unwrap();
 
             assert_eq!(config.links.len(), 2);
-            assert_eq!(config.links[0].0, concat_pwd("m_a"));
+            assert_eq!(config.links[0].0, "m_a");
             assert_eq!(config.links[0].1, "m_b");
-            assert_eq!(config.links[1].0, concat_pwd("m_c"));
+            assert_eq!(config.links[1].0, "m_c");
             assert_eq!(config.links[1].1, "m_d");
         }
 
@@ -178,9 +156,9 @@ mod tests {
             let config = adapter(&PathBuf::default(), "toml", raw).unwrap();
 
             assert_eq!(config.links.len(), 2);
-            assert_eq!(config.links[0].0, concat_pwd("a"));
+            assert_eq!(config.links[0].0, "a");
             assert_eq!(config.links[0].1, "b");
-            assert_eq!(config.links[1].0, concat_pwd("c"));
+            assert_eq!(config.links[1].0, "c");
             assert_eq!(config.links[1].1, "d");
         }
     }
@@ -202,9 +180,9 @@ mod tests {
             let config = adapter(&PathBuf::default(), "toml", raw).unwrap();
 
             assert_eq!(config.links.len(), 2);
-            assert_eq!(config.links[0].0, concat_pwd("m_a"));
+            assert_eq!(config.links[0].0, "m_a");
             assert_eq!(config.links[0].1, "m_b");
-            assert_eq!(config.links[1].0, concat_pwd("m_c"));
+            assert_eq!(config.links[1].0, "m_c");
             assert_eq!(config.links[1].1, "m_d");
         }
 
@@ -222,9 +200,9 @@ mod tests {
             let config = adapter(&PathBuf::default(), "toml", raw).unwrap();
 
             assert_eq!(config.links.len(), 2);
-            assert_eq!(config.links[0].0, concat_pwd("a"));
+            assert_eq!(config.links[0].0, "a");
             assert_eq!(config.links[0].1, "b");
-            assert_eq!(config.links[1].0, concat_pwd("c"));
+            assert_eq!(config.links[1].0, "c");
             assert_eq!(config.links[1].1, "d");
         }
     }
@@ -246,9 +224,9 @@ mod tests {
             let config = adapter(&PathBuf::default(), "toml", raw).unwrap();
 
             assert_eq!(config.links.len(), 2);
-            assert_eq!(config.links[0].0, concat_pwd("m_a"));
+            assert_eq!(config.links[0].0, "m_a");
             assert_eq!(config.links[0].1, "m_b");
-            assert_eq!(config.links[1].0, concat_pwd("m_c"));
+            assert_eq!(config.links[1].0, "m_c");
             assert_eq!(config.links[1].1, "m_d");
         }
 
@@ -266,9 +244,9 @@ mod tests {
             let config = adapter(&PathBuf::default(), "toml", raw).unwrap();
 
             assert_eq!(config.links.len(), 2);
-            assert_eq!(config.links[0].0, concat_pwd("a"));
+            assert_eq!(config.links[0].0, "a");
             assert_eq!(config.links[0].1, "b");
-            assert_eq!(config.links[1].0, concat_pwd("c"));
+            assert_eq!(config.links[1].0, "c");
             assert_eq!(config.links[1].1, "d");
         }
     }

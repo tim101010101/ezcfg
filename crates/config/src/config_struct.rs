@@ -3,6 +3,7 @@ use std::{fs::read_to_string, path::PathBuf};
 use serde::Deserialize;
 
 use crate::error::ReadConfigError::*;
+use crate::link_transform::link_transform;
 use crate::{adapter::adapter, error::ReadConfigError};
 
 pub type Links = Vec<(String, String)>;
@@ -39,7 +40,14 @@ impl TryFrom<&PathBuf> for Config {
             }
         };
 
-        adapter(path, ext, &content)
+        let raw_config = adapter(path, ext, &content)?;
+
+        let links = link_transform(raw_config.links);
+
+        Ok(Config {
+            links,
+            ..raw_config
+        })
     }
 }
 
