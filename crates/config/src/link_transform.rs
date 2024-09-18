@@ -1,6 +1,6 @@
 use std::{
     env::{self, current_dir},
-    path::PathBuf,
+    path::Path,
 };
 
 use crate::Links;
@@ -15,20 +15,20 @@ fn get_link_transformer() -> impl Fn(&(String, String)) -> (String, String) {
     move |(source, target)| (handle_source(source, &pwd), handle_target(target, &pwd))
 }
 
-fn handle_source(source: &str, pwd: &PathBuf) -> String {
+fn handle_source(source: &str, pwd: &Path) -> String {
     pwd.join(source).to_str().unwrap().to_string()
 }
 
-fn handle_target(target: &str, _pwd: &PathBuf) -> String {
+fn handle_target(target: &str, _pwd: &Path) -> String {
     handle_path_placeholder(target)
 }
 
 #[inline]
 fn handle_path_placeholder(path: &str) -> String {
-    if path.starts_with("$") {
+    if path.starts_with('$') {
         if path.starts_with("$HOME") {
             let mut res = env::var("HOME").unwrap();
-            res.push_str(&path[5..]);
+            res.push_str(path.strip_prefix("$HOME").unwrap());
             return res;
         }
     }
