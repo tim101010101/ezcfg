@@ -30,23 +30,41 @@ cd ~
 mkdir .dotfiles
 ```
 
-Create a configuration file here.
+Create your profiles here, like `nvim` and `zsh/.zshrc`
+
+And `ezcfg` needs a configuration file `.ezcfg.toml` to tell it how it works.
 
 ```sh
-touch .ezcfg.toml
-```
-
-Configure the source path and target path of the link you need.
-
-```toml
-links = [
+echo 'links = [
     ["zsh/.zshrc", "$HOME/.zshrc"],
     ["nvim",       "$HOME/.config/nvim"],
-]
+]' > .ezcfg.toml
+```
+
+At this time, our directory structure will probably be like this.
+
+```sh
+~/.dotfiles
+├──nvim
+│  ├──init.lua
+│  ├──lazy-lock.json
+│  └──lua
+├──zsh
+│  └──.zshrc
+└──.ezcfg.toml
 ```
 
 Now just run the command.
 
 ```sh
 ezcfg
+```
+
+After the command is successfully executed, we can see that the soft links we need is already in the specified location.
+
+```sh
+~
+├──.config
+│  └──nvim -> ~/.dotfiles/nvim
+└──.zshrc -> ~/.dotfiles/zsh/.zshrc
 ```
